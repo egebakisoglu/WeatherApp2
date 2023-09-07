@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weatherapp2/controller/global_controller.dart';
 import 'package:weatherapp2/widgets/city_headline.dart';
+import 'package:weatherapp2/widgets/current_weather_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,12 +24,13 @@ class _HomePageState extends State<HomePage> {
           ? const Center(
             child: CircularProgressIndicator(),
           )
-          : Container(
-            child: ListView(
-              children: [
-                CityHeadline(),
-              ],
-            ),
+          : ListView(
+            children: [
+              CityHeadline(),
+              CurrentWeather(
+                currentWeatherData: globalController.getWeatherData().getCurrentWeather(),
+              ),
+            ],
           )
         ),
       ),
