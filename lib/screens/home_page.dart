@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weatherapp2/controller/global_controller.dart';
+import 'package:weatherapp2/widgets/city_headline.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,6 +17,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: SafeArea(
+        child: Obx(() =>
+          globalController.checkLoading().isTrue
+          ? const Center(
+            child: CircularProgressIndicator(),
+          )
+          : Container(
+            child: ListView(
+              children: [
+                CityHeadline(),
+              ],
+            ),
+          )
+        ),
+      ),
     );
   }
 }
