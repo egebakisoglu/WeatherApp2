@@ -4,7 +4,9 @@ import 'package:weatherapp2/models/hourly_weather.dart';
 class HourlyWeather extends StatelessWidget {
   final HourlyWeatherData hourlyWeatherData;
 
-  const HourlyWeather({super.key, required this.hourlyWeatherData});
+  HourlyWeather({super.key, required this.hourlyWeatherData});
+
+  int currentHour = DateTime.now().hour;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class HourlyWeather extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top:30, left: 30, bottom: 30),
+          margin: EdgeInsets.only(top:30, left: 30),
           child: Text(
             'Today',
             style: TextStyle(
@@ -21,7 +23,7 @@ class HourlyWeather extends StatelessWidget {
           ),
         ),
         Container(
-          height: 150,
+          height: 175,
           padding: EdgeInsets.symmetric(vertical: 20),
           margin: EdgeInsets.only(left: 20),
           child: ListView.builder(
@@ -29,22 +31,25 @@ class HourlyWeather extends StatelessWidget {
             itemCount: 24,
             itemBuilder: (context, index) {
               return Container(
+                padding: EdgeInsets.all(5),
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                width: 100,
                 decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
+                  color: Colors.lightBlue[100],
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      blurRadius: 20,
+                      blurRadius: 3,
                       spreadRadius: 1,
                       color: Colors.grey,
-                      offset: Offset(1,0),
+                      offset: Offset(4,0),
                     ),
                   ]
                 ),
                 child: HourlyListItem(
-                  time: hourlyWeatherData.hourly.time!.elementAt(index),
-                  temp2m: hourlyWeatherData.hourly.temp2m!.elementAt(index),
-                  weatherCode: hourlyWeatherData.hourly.weatherCode!.elementAt(index),
+                  time: hourlyWeatherData.hourly.time!.elementAt(currentHour + index),
+                  temp2m: hourlyWeatherData.hourly.temp2m!.elementAt(currentHour + index),
+                  weatherCode: hourlyWeatherData.hourly.weatherCode!.elementAt(currentHour + index),
                 ),
               );
             },
@@ -75,10 +80,21 @@ class HourlyListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(getTime(time)),
+        Text(
+          getTime(time),
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
         Image.asset("assets/weather/$weatherCode.png"),
-        Text("$temp2m"),
+        Text(
+          "$temp2m °C",
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
       ],
     );
   }
