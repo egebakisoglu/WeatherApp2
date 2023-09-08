@@ -15,6 +15,5 @@ class WeatherApi {
     weatherData = WeatherData(CurrentWeatherData.fromJson(jsonString));
 
     return weatherData!;
-    // return jsonDecode(response.body);
   }
 }
