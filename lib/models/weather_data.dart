@@ -1,9 +1,12 @@
 import 'package:weatherapp2/models/current_weather.dart';
+import 'package:weatherapp2/models/hourly_weather.dart';
 
 class WeatherData {
-  final CurrentWeatherData? currentWeatherData;
+  final CurrentWeatherData? current;
+  final HourlyWeatherData? hourly;
 
-  WeatherData([this.currentWeatherData]);
+  WeatherData([this.current, this.hourly]);
 
-  CurrentWeatherData getCurrentWeather() => currentWeatherData!;
+  CurrentWeatherData getCurrentWeather() => current!;
+  HourlyWeatherData getHourlyWeather() => hourly!;
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:weatherapp2/models/current_weather.dart';
+import 'package:weatherapp2/models/hourly_weather.dart';
 import 'package:weatherapp2/models/weather_data.dart';
 
 class WeatherApi {
@@ -12,7 +13,9 @@ class WeatherApi {
 
     final jsonString = jsonDecode(response.body);
 
-    weatherData = WeatherData(CurrentWeatherData.fromJson(jsonString));
+    weatherData = WeatherData(CurrentWeatherData.fromJson(jsonString),
+        HourlyWeatherData.fromJson(jsonString)
+    );
 
     return weatherData!;
   }
