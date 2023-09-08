@@ -41,11 +41,16 @@ class _CityHeadlineState extends State<CityHeadline> {
           child: Text(
             city,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 40,
             ),
           ),
         ),
-        Text(date),
+        Text(
+          date,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
       ],
     );
   }
