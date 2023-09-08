@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:weatherapp2/controller/global_controller.dart';
 import 'package:weatherapp2/widgets/city_headline.dart';
 import 'package:weatherapp2/widgets/current_weather_widget.dart';
+import 'package:weatherapp2/widgets/hourly_weather_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,6 +30,9 @@ class _HomePageState extends State<HomePage> {
               CityHeadline(),
               CurrentWeather(
                 currentWeatherData: globalController.getWeatherData().getCurrentWeather(),
+              ),
+              HourlyWeather(
+                hourlyWeatherData: globalController.getWeatherData().getHourlyWeather()
               ),
             ],
           )
