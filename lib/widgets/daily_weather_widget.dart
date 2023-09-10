@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:weatherapp2/models/daily_weather.dart';
+import 'package:weatherapp2/screens/daily_info_page.dart';
+import 'package:weatherapp2/models/hourly_weather.dart';
 
 class DailyWeather extends StatelessWidget {
   final DailyWeatherData dailyWeatherData;
+  final HourlyWeatherData hourlyWeatherData;
 
-  DailyWeather({super.key, required this.dailyWeatherData});
-
-  int currentDay = DateTime.now().day;
-  int weekDay = DateTime.now().weekday;
+  DailyWeather({super.key, required this.dailyWeatherData, required this.hourlyWeatherData});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,8 @@ class DailyWeather extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top:30, left: 30),
-          child: Text(
+          margin: const EdgeInsets.only(top:30, left: 30),
+          child: const Text(
             'Next 7 days',
             style: TextStyle(
               fontSize:32,
@@ -25,12 +25,12 @@ class DailyWeather extends StatelessWidget {
         ),
         Container(
           height: 540,
-          margin: EdgeInsets.only(left: 30, right: 30, bottom: 40,top: 20),
-          padding: EdgeInsets.only(top:4),
+          margin: const EdgeInsets.only(left: 30, right: 30, bottom: 40,top: 20),
+          padding: const EdgeInsets.only(top:4),
           decoration: BoxDecoration(
             color: Colors.lightBlue[200],
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.grey,
                 spreadRadius: 2,
@@ -44,18 +44,31 @@ class DailyWeather extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 7,
             itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                margin: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                child: DailyListItem(
-                  weekDay: (weekDay + index + 1) % 7,
-                  date: currentDay + index + 1,
-                  weatherCode: dailyWeatherData.daily.weatherCode!.elementAt(index+1),
-                  maxTemp2m: dailyWeatherData.daily.maxTemp2m!.elementAt(index + 1),
-                  minTemp2m: dailyWeatherData.daily.minTemp2m!.elementAt(index + 1),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>
+                        DailyInfoPage(
+                          hourlyOfDailyWeather: hourlyWeatherData,
+                          pageIndex: index + 1,
+                        )
+                    )
+                  );
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: DailyListItem(
+                    weekDay: (DateTime.now().weekday + index + 1) % 7,
+                    date: DateTime.now().day + index + 1,
+                    weatherCode: dailyWeatherData.daily.weatherCode!.elementAt(index+1),
+                    maxTemp2m: dailyWeatherData.daily.maxTemp2m!.elementAt(index + 1),
+                    minTemp2m: dailyWeatherData.daily.minTemp2m!.elementAt(index + 1),
+                  ),
                 ),
               );
             }
@@ -108,20 +121,19 @@ class DailyListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-
         // day and weekday
         Expanded(
           child: Row(
             children: [
               Text(
                 "$date, ",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                 ),
               ),
               Text(
                 findWeekDay(weekDay),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                 ),
               ),
@@ -131,7 +143,7 @@ class DailyListItem extends StatelessWidget {
 
         // weather icon
         Image.asset("assets/weather/$weatherCode.png"),
-        SizedBox(width: 30),
+        const SizedBox(width: 30),
 
         // maximum and minimum temperature
         Column(

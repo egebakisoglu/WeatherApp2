@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
               ),
               DailyWeather(
                 dailyWeatherData: globalController.getWeatherData().getDailyWeather(),
+                  hourlyWeatherData: globalController.getWeatherData().getHourlyWeather(),
               ),
             ],
           )
