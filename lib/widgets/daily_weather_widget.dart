@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weatherapp2/models/daily_weather.dart';
 import 'package:weatherapp2/screens/daily_info_page.dart';
 import 'package:weatherapp2/models/hourly_weather.dart';
@@ -7,7 +8,7 @@ class DailyWeather extends StatelessWidget {
   final DailyWeatherData dailyWeatherData;
   final HourlyWeatherData hourlyWeatherData;
 
-  DailyWeather({super.key, required this.dailyWeatherData, required this.hourlyWeatherData});
+  const DailyWeather({super.key, required this.dailyWeatherData, required this.hourlyWeatherData});
 
   @override
   Widget build(BuildContext context) {
@@ -44,32 +45,12 @@ class DailyWeather extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 7,
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>
-                        DailyInfoPage(
-                          hourlyOfDailyWeather: hourlyWeatherData,
-                          pageIndex: index + 1,
-                        )
-                    )
-                  );
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  child: DailyListItem(
-                    weekDay: (DateTime.now().weekday + index + 1) % 7,
-                    date: DateTime.now().day + index + 1,
-                    weatherCode: dailyWeatherData.daily.weatherCode!.elementAt(index+1),
-                    maxTemp2m: dailyWeatherData.daily.maxTemp2m!.elementAt(index + 1),
-                    minTemp2m: dailyWeatherData.daily.minTemp2m!.elementAt(index + 1),
-                  ),
-                ),
+              return DailyListItem(
+                  date: DateTime.now().add(Duration(days: 1 + index)),
+                  weatherCode: dailyWeatherData.daily.weatherCode!.elementAt(index+1),
+                  maxTemp2m: dailyWeatherData.daily.maxTemp2m!.elementAt(index + 1),
+                  minTemp2m: dailyWeatherData.daily.minTemp2m!.elementAt(index + 1),
+                  hourly: hourlyWeatherData.hourly,
               );
             }
           ),
@@ -80,19 +61,19 @@ class DailyWeather extends StatelessWidget {
 }
 
 class DailyListItem extends StatelessWidget {
-  final int weekDay;
-  final int date;
+  final DateTime date;
   final int weatherCode;
   final double maxTemp2m;
   final double minTemp2m;
+  final Hourly hourly;
 
   const DailyListItem({
     super.key,
-    required this.weekDay,
     required this.date,
     required this.weatherCode,
     required this.maxTemp2m,
-    required this.minTemp2m
+    required this.minTemp2m,
+    required this.hourly,
   });
 
   // turn weekday integer into name of the weekday
@@ -119,54 +100,78 @@ class DailyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        // day and weekday
-        Expanded(
-          child: Row(
-            children: [
-              Text(
-                "$date, ",
-                style: const TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-              Text(
-                findWeekDay(weekDay),
-                style: const TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-            ],
-          ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>
+                DailyInfoPage(
+                  hourlyWeather: hourly.weatherCode!,
+                  hourlyTemp2m: hourly.temp2m!,
+                  date: DateFormat('MMMM d, EEEE').format(date),
+                  weatherCode: weatherCode,
+                  maxTemp2m: maxTemp2m,
+                  minTemp2m: minTemp2m,
+                )
+            )
+        );
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
         ),
-
-        // weather icon
-        Image.asset("assets/weather/$weatherCode.png"),
-        const SizedBox(width: 30),
-
-        // maximum and minimum temperature
-        Column(
+        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Row(
           children: [
-            Text(
-              "$maxTemp2m",
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.orange[800],
-                fontWeight: FontWeight.bold,
+            // day and weekday
+            Expanded(
+              child: Row(
+                children: [
+                  Text(
+                    "${date.day}, ",
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  Text(
+                    findWeekDay(date.weekday % 7),
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ],
               ),
             ),
-            Text(
-              "$minTemp2m",
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.blue[800],
-                fontWeight: FontWeight.bold,
-              ),
+
+            // weather icon
+            Image.asset("assets/weather/$weatherCode.png"),
+            const SizedBox(width: 30),
+
+            // maximum and minimum temperature
+            Column(
+              children: [
+                Text(
+                  "$maxTemp2m",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.orange[800],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "$minTemp2m",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.blue[800],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
