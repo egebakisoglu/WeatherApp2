@@ -28,7 +28,7 @@ class HourlyWeather extends StatelessWidget {
           margin: EdgeInsets.only(left: 20),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 24 - currentHour,
+            itemCount: 24,
             itemBuilder: (context, index) {
               return Container(
                 padding: EdgeInsets.all(5),
@@ -47,9 +47,9 @@ class HourlyWeather extends StatelessWidget {
                   ]
                 ),
                 child: HourlyListItem(
-                  time: hourlyWeatherData.hourly.time!.elementAt(currentHour + index),
-                  temp2m: hourlyWeatherData.hourly.temp2m!.elementAt(currentHour + index),
-                  weatherCode: hourlyWeatherData.hourly.weatherCode!.elementAt(currentHour + index),
+                  time: hourlyWeatherData.hourly.time!.elementAt(index),
+                  temp2m: hourlyWeatherData.hourly.temp2m!.elementAt(index),
+                  weatherCode: hourlyWeatherData.hourly.weatherCode!.elementAt(index),
                 ),
               );
             },
