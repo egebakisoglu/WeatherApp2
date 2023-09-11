@@ -46,11 +46,12 @@ class DailyWeather extends StatelessWidget {
             itemCount: 7,
             itemBuilder: (context, index) {
               return DailyListItem(
-                  date: DateTime.now().add(Duration(days: 1 + index)),
-                  weatherCode: dailyWeatherData.daily.weatherCode!.elementAt(index+1),
-                  maxTemp2m: dailyWeatherData.daily.maxTemp2m!.elementAt(index + 1),
-                  minTemp2m: dailyWeatherData.daily.minTemp2m!.elementAt(index + 1),
-                  hourly: hourlyWeatherData.hourly,
+                pageIndex: index,
+                date: DateTime.now().add(Duration(days: 1 + index)),
+                weatherCode: dailyWeatherData.daily.weatherCode!.elementAt(index+1),
+                maxTemp2m: dailyWeatherData.daily.maxTemp2m!.elementAt(index + 1),
+                minTemp2m: dailyWeatherData.daily.minTemp2m!.elementAt(index + 1),
+                hourly: hourlyWeatherData.hourly,
               );
             }
           ),
@@ -62,6 +63,7 @@ class DailyWeather extends StatelessWidget {
 
 class DailyListItem extends StatelessWidget {
   final DateTime date;
+  final int pageIndex;
   final int weatherCode;
   final double maxTemp2m;
   final double minTemp2m;
@@ -69,6 +71,7 @@ class DailyListItem extends StatelessWidget {
 
   const DailyListItem({
     super.key,
+    required this.pageIndex,
     required this.date,
     required this.weatherCode,
     required this.maxTemp2m,
@@ -106,6 +109,7 @@ class DailyListItem extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) =>
                 DailyInfoPage(
+                  pageIndex: pageIndex + 1,
                   hourlyWeather: hourly.weatherCode!,
                   hourlyTemp2m: hourly.temp2m!,
                   date: DateFormat('MMMM d, EEEE').format(date),
