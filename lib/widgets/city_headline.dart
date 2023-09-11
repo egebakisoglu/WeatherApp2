@@ -27,7 +27,7 @@ class _CityHeadlineState extends State<CityHeadline> {
     List <Placemark> placemark = await placemarkFromCoordinates(latitude, longitude);
     Placemark location = placemark[0];
     setState(() {
-      city = location.locality!;
+      city = location.subAdministrativeArea!;
     });
   }
 
