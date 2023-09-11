@@ -41,8 +41,8 @@ class CurrentWeather extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 75),
               SizedBox(
                 height: 50,
                 width: 50,
@@ -52,7 +52,7 @@ class CurrentWeather extends StatelessWidget {
                 ),
               ),
               Text(
-                "${currentWeatherData.current.temp} °C",
+                "${currentWeatherData.current.temp!.toInt()} °C",
                 style: TextStyle(
                   fontSize: 45,
                 ),
@@ -60,8 +60,8 @@ class CurrentWeather extends StatelessWidget {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 80),
               SizedBox(
                 height: 40,
                 width: 65,

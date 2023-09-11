@@ -90,7 +90,7 @@ class HourlyListItem extends StatelessWidget {
         ),
         Image.asset("assets/weather/$weatherCode.png"),
         Text(
-          "$temp2m °C",
+          "${temp2m.toInt()} °C",
           style: TextStyle(
             fontSize: 20,
           ),

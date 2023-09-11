@@ -6,8 +6,8 @@ class DailyInfoPage extends StatefulWidget {
   final List hourlyTemp2m;
   final String date;
   final int weatherCode;
-  final double maxTemp2m;
-  final double minTemp2m;
+  final int maxTemp2m;
+  final int minTemp2m;
 
   const DailyInfoPage({
     super.key,
@@ -31,6 +31,11 @@ class _DailyInfoPageState extends State<DailyInfoPage> {
   void initState() {
     listStartIndex = widget.pageIndex * 24;
     super.initState();
+  }
+
+  int hourlyWeather(int index){
+    double value = widget.hourlyTemp2m[listStartIndex + index];
+    return value.toInt();
   }
 
   @override
@@ -91,7 +96,7 @@ class _DailyInfoPageState extends State<DailyInfoPage> {
               ),
               Image.asset("assets/weather/${widget.hourlyWeather[listStartIndex + index]}.png"),
               Text(
-                "${widget.hourlyTemp2m[listStartIndex + index]} °C",
+                "${hourlyWeather(index)} °C",
                 style: TextStyle(
                   fontSize: 20,
                 ),

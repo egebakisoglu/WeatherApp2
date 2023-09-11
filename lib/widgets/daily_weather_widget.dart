@@ -114,8 +114,8 @@ class DailyListItem extends StatelessWidget {
                   hourlyTemp2m: hourly.temp2m!,
                   date: DateFormat('MMMM d, EEEE').format(date),
                   weatherCode: weatherCode,
-                  maxTemp2m: maxTemp2m,
-                  minTemp2m: minTemp2m,
+                  maxTemp2m: maxTemp2m.toInt(),
+                  minTemp2m: minTemp2m.toInt(),
                 )
             )
         );
@@ -156,7 +156,7 @@ class DailyListItem extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  "$maxTemp2m",
+                  "${maxTemp2m.toInt()}",
                   style: TextStyle(
                     fontSize: 24,
                     color: Colors.orange[800],
@@ -164,7 +164,7 @@ class DailyListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "$minTemp2m",
+                  "${minTemp2m.toInt()}",
                   style: TextStyle(
                     fontSize: 24,
                     color: Colors.blue[800],
